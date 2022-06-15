@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>Resources/image/angp-in.png</file>
+        <file>Resources/image/avp-in.png</file>
+        <file>Resources/image/pos-in.png</file>
+        <file>Resources/image/angp-in-active.png</file>
+        <file>Resources/image/avp-in-active.png</file>
+        <file>Resources/image/pos-in-active.png</file>
+        <file>Resources/image/read-in.png</file>
+        <file>Resources/image/read-in-active.png</file>
+        <file>Resources/image/angp-out.png</file>
+        <file>Resources/image/angp-out-active.png</file>
+        <file>Resources/image/angp-out-notice.png</file>
+        <file>Resources/image/area-out.png</file>
+        <file>Resources/image/area-out-active.png</file>
+        <file>Resources/image/area-out-notice.png</file>
+        <file>Resources/image/avp-out.png</file>
+        <file>Resources/image/avp-out-active.png</file>
+        <file>Resources/image/avp-out-notice.png</file>
+        <file>Resources/image/copy.png</file>
+        <file>Resources/image/copy-press.png</file>
+        <file>Resources/image/aon-in.png</file>
+        <file>Resources/image/aon-in-active.png</file>
+        <file>Resources/image/trackvisual.png</file>
+        <file>Resources/image/trackvisual-press.png</file>
+        <file>Resources/image/aircraft.png</file>
+        <file>Resources/image/aircraft-press.png</file>
+    </qresource>
+</RCC>

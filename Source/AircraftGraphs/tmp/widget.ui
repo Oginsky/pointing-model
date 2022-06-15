@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Widget</class>
+ <widget class="QWidget" name="Widget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1290</width>
+    <height>686</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>widget</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="1">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QCustomPlot" name="graph1" native="true"/>
+       </item>
+       <item>
+        <widget class="QCustomPlot" name="graph2" native="true"/>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QCustomPlot" name="graph3" native="true"/>
+       </item>
+       <item>
+        <widget class="QCustomPlot" name="graph4" native="true"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0">
+    <widget class="QFrame" name="leftBar">
+     <property name="minimumSize">
+      <size>
+       <width>505</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>505</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: rgb(52, 52, 52);
+
+QTabWidget {
+	background-color: rgb(52, 52, 52);
+	border: 0;
+}</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>505</width>
+        <height>571</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>505</width>
+        <height>571</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>505</width>
+        <height>10000</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+QTabWidget::pane {
+	color: rgb(52, 52, 52);
+ };
+
+QTabWidget {
+	background: rgb(52, 52, 52);
+}
+
+QPushButton {
+	bacground: rgb(255, 255, 255);
+};
+
+QLineEdit {
+	background-color: rgb(255,255,255);
+};</string>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="mainTab">
+       <attribute name="title">
+        <string>Главная</string>
+       </attribute>
+       <widget class="QGroupBox" name="readFileGroup">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>481</width>
+          <height>131</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox::title {
+     subcontrol-origin: margin;
+     padding: 0 3px;
+	 color:rgb(255, 255, 255)
+ }
+
+
+</string>
+        </property>
+        <property name="title">
+         <string>Ввод данных</string>
+        </property>
+        <widget class="QLineEdit" name="statusReadingData">
+         <property name="geometry">
+          <rect>
+           <x>40</x>
+           <y>70</y>
+           <width>401</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">
+	background-color: rgb(255,255,255);</string>
+         </property>
+        </widget>
+        <widget class="QWidget" name="layoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>40</x>
+           <y>30</y>
+           <width>401</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QPushButton" name="readFileButton">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255,255,255);</string>
+            </property>
+            <property name="text">
+             <string>Выбрать файл</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="setInputButton">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255,255,255);</string>
+            </property>
+            <property name="text">
+             <string>Ввести</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>340</y>
+          <width>481</width>
+          <height>191</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox::title {
+     subcontrol-origin: margin;
+     padding: 0 3px;
+	 color:rgb(255, 255, 255)
+ }
+
+
+</string>
+        </property>
+        <property name="title">
+         <string>Данные</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="2" column="0">
+          <widget class="QLabel" name="yLabel">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(255, 255, 255)</string>
+           </property>
+           <property name="text">
+            <string>Y:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="timeLabel">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(255, 255, 255)</string>
+           </property>
+           <property name="text">
+            <string>T:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="zLabel">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(255, 255, 255)</string>
+           </property>
+           <property name="text">
+            <string>Z:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="vLabel">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(255, 255, 255)</string>
+           </property>
+           <property name="text">
+            <string>V:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="xLabel">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(255, 255, 255)</string>
+           </property>
+           <property name="text">
+            <string>X:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="ksiLabel">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(255, 255, 255)</string>
+           </property>
+           <property name="text">
+            <string>PSI:</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QGroupBox" name="graphOptionsGroup">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>150</y>
+          <width>481</width>
+          <height>181</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox::title {
+     subcontrol-origin: margin;
+     padding: 0 3px;
+	 color:rgb(255, 255, 255)
+ }
+
+
+</string>
+        </property>
+        <property name="title">
+         <string>Настройки отображения</string>
+        </property>
+        <widget class="QPushButton" name="PlotGraphsButton">
+         <property name="geometry">
+          <rect>
+           <x>120</x>
+           <y>120</y>
+           <width>251</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">
+float: right;
+margin-right:5px;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+padding: 5px 9px;
+font-size: 1.2em;
+color: rgb(255, 255, 255);
+background-color: rgb(207, 26, 68);
+text-shadow: #454545 0 0 2px;
+border-botton: 4px solid rgba(217, 91, 72, 1);
+</string>
+         </property>
+         <property name="text">
+          <string>Построить</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="graph1Enable">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>30</y>
+           <width>181</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QCheckBox {
+	color: rgb(255, 255, 255);
+}</string>
+         </property>
+         <property name="text">
+          <string>Горизонтальная плоскость</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="graph2Enable">
+         <property name="geometry">
+          <rect>
+           <x>290</x>
+           <y>30</y>
+           <width>181</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QCheckBox {
+	color: rgb(255, 255, 255);
+}
+</string>
+         </property>
+         <property name="text">
+          <string>Набор высоты</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="graph4Enable">
+         <property name="geometry">
+          <rect>
+           <x>290</x>
+           <y>60</y>
+           <width>81</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QCheckBox {
+	color: rgb(255, 255, 255);
+}</string>
+         </property>
+         <property name="text">
+          <string>Курс</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="graph3Enable">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>60</y>
+           <width>181</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QCheckBox {
+	color: rgb(255, 255, 255);
+}</string>
+         </property>
+         <property name="text">
+          <string>Вертикальная плоскость</string>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="CharacterTab">
+       <attribute name="title">
+        <string>Характеристики расположения</string>
+       </attribute>
+       <widget class="QTableView" name="parametersTable">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>511</width>
+          <height>691</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>511</width>
+          <height>691</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>500</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: rgb(255, 255, 255);
+</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="playStopGroup">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>580</y>
+        <width>481</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>481</width>
+        <height>71</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>481</width>
+        <height>71</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: rgb(52, 52, 52);
+color: rgb(255, 255, 255);
+
+QGroupBox::title {
+     subcontrol-origin: margin;
+     padding: 0 3px;
+	 color:rgb(255, 255, 255)
+ }
+
+
+</string>
+      </property>
+      <property name="title">
+       <string>Play/Stop</string>
+      </property>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>210</x>
+         <y>20</y>
+         <width>111</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QToolButton" name="leftStepButton">
+          <property name="styleSheet">
+           <string notr="true">QToolButton { 
+           image: url(:/resource/resource/img/left-step.png);
+           icon-size: 24px;
+           border: none;
+};</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="playButton">
+          <property name="styleSheet">
+           <string notr="true">QToolButton { 
+           image: url(:/resource/resource/img/play.png);
+           icon-size: 24px;
+           border: none;
+};</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="rightStepButton">
+          <property name="styleSheet">
+           <string notr="true">QToolButton { 
+           image: url(:/resource/resource/img/right-step.png);
+           icon-size: 24px;
+           border: none;
+};</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QLabel" name="showTimLabel">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>30</y>
+         <width>41</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Times New Roman</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+	color:rgb(255, 255, 255)
+}</string>
+       </property>
+       <property name="text">
+        <string>t =</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="showTime">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>30</y>
+         <width>41</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0)</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

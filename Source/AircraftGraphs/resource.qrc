@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/resource">
+        <file>resource/img/left-step.png</file>
+        <file>resource/img/play.png</file>
+        <file>resource/img/right-step.png</file>
+        <file>resource/img/stop.png</file>
+    </qresource>
+</RCC>

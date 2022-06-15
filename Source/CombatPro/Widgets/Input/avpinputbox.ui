@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AvpInputBox</class>
+ <widget class="QWidget" name="AvpInputBox">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>418</width>
+    <height>166</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>AvpInputBox</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>391</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Программные скорости</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1">
+     <widget class="QLabel" name="vn2_label">
+      <property name="text">
+       <string>VN2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="vn2_line">
+      <property name="text">
+       <string>250</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLineEdit" name="vn1_line">
+      <property name="text">
+       <string>150</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="vn3_line">
+      <property name="text">
+       <string>350</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="vn4_label">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>VN4</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="vn3_label">
+      <property name="text">
+       <string>VN3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="vn1_label">
+      <property name="text">
+       <string>VN1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QLineEdit" name="vn4_line">
+      <property name="text">
+       <string>450</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="fly_mode_label">
+      <property name="text">
+       <string>Режим полета:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1" colspan="2">
+     <widget class="QComboBox" name="fly_mode_comboBox">
+      <property name="styleSheet">
+       <string notr="true">QComboBox {
+	border: 1px solid white;
+	border-radius: 2px;
+	padding: 1px 18px 1px 3px;
+	mi-width: 6em;
+	color: rgb(0, 0, 0);
+}
+
+QComboBox:editable {
+	background: rgb(47, 49, 54);
+	color: white;
+}
+
+QFrame {
+	background: rgb(47, 49, 54);
+	color: white;
+}</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Крейсерский</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Комбинированный</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Форсажный</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="start_btn">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>120</y>
+     <width>401</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Пуск</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

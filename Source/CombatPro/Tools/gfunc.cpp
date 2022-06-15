@@ -1,0 +1,304 @@
+#include "gfunc.h"
+#include <cmath>
+
+
+const double GPI(3.14159265358979323846);		// ????? ??
+const double GMPI(-GPI);						// ????? -??
+const double G2PI(GPI*2.0);		// 2.0*??
+const double GPI2(GPI*0.5);		// ??/2.0
+const double GPI3_2(GPI*1.5);		// 3*??/2.0
+const double GPI4(GPI*0.25);		// ??/4.0
+const double GPI18(GPI4/18.0);	// ??/18.0
+
+const double d2r = GPI/180.0;
+const double r2d = 180.0/GPI;
+
+const double RADIUS_EARTH(6371.0);											// ??????? ?????? ????? (??)
+const double RADIUS_EARTH_M(RADIUS_EARTH*1000.0);							// ??????? ?????? ????? (?)
+const double RADIUS_EARTH_EQUIVALENT_M(RADIUS_EARTH_M*4.0/3.0);				// ?????? ?????, ??? ???????, ?????????? ????????? ????? ??????? ??????????????
+const double EARTH_ROTATION_PERIOD(86164.090530833);
+const double EARTH_ROTATE_SPEED(G2PI/EARTH_ROTATION_PERIOD);				// ??????? ???????? ???????? ?????
+const double EARTH_ROTATE_SPEED_2(EARTH_ROTATE_SPEED*EARTH_ROTATE_SPEED);	// ??????? ??????? ???????? ???????? ?????
+const double EARTH_AXIAL_TILT(0.409092629495478);							// ???? ??????? ??? ?????
+const double LATITUDE_TROPIC_ZONE_EARTH(EARTH_AXIAL_TILT);					// ?????? ??????? ??????????? ????????????? ????
+const double LATITUDE_POLAR_ZONE_EARTH(GPI2-EARTH_AXIAL_TILT);				// ?????? ??????? ???????? ????????????? ????
+
+
+double distancePoint(double dx, double dy)
+{
+    return sqrt(dx*dx+dy*dy);
+}
+
+double distancePoint(double dx, double dy, double dz)
+{
+    return sqrt(dx*dx+dy*dy+dz*dz);
+}
+
+template <typename T>
+static T sign(const T& tmp) {
+    return (tmp == T(0)) ? 0 :
+        (tmp > T(0) ? 1 : -1);
+}
+
+
+// ??????? ?? ?????????? ??????????????? ?????? ????????????? ?? (x,y,z)
+// ? ??????????????? ??????????? ?? (0 ??????? - ???????) (r,f,l)
+// EC earth-centered; SCS spherical coordinate system;
+bool conversionGeoCartesToGeoSpheric(double x, double y, double z, double &r, double &f, double &l)
+{
+    double xy(x*x+y*y);
+    r=sqrt(xy+z*z);
+    xy=sqrt(xy);
+
+    if(xy==0.0)
+    {
+        f=(z>=0.0)?GPI2:(-GPI2);
+        l=0.0;
+    }
+    else
+    {
+        //f=atan(z/xy);
+        //l=acos(x/xy)*sign(y);
+        f=atan2(z, xy);
+        if(x==0.0) l=(y>=0.0)?GPI2:(-GPI2);
+        else l=atan2(y, x);
+    }
+    //double t_fi(acos(xy/r));
+    //double t_l(0.0);
+
+    /*if(x==0.0) l=(y>=0)?GPI2:(-GPI2);
+    else
+    {
+        l=atan(y/x);
+        //t_
+    }*/
+    return true;
+}
+
+// ??????? ?? ??????????????? ??????????? ?? ? ??????????? ??????????????? ?????? ????????????? ??
+bool conversionGeoSphericToGeoCartes(double r, double f, double l, double &x, double &y, double &z)
+{
+    if(r==0.0) r=RADIUS_EARTH_M;
+    x=r*cos(f)*cos(l);
+    y=r*cos(f)*sin(l);
+    z=r*sin(f);
+    return true;
+}
+
+// ??????? ?? ???????????????? ????????????? ?? ? ?????????? ??????????????? ????????????? ?? (???????????????? ??????????, ?????????? ??????????, ????????????? ?????????? ?????? ???)
+void conversionTopoCartesToGeoCartes(double xt, double yt, double zt, double& xg, double& yg, double& zg, double r, double fc, double lc)
+{
+    xg= -(xt)*sin(fc)*cos(lc)	+(yt)*cos(fc)*cos(lc)	-(zt)*sin(lc);
+    //yg= -(xt)*sin(fc)*sin(lc)	-(yt)*cos(fc)*sin(lc)	+(zt)*cos(lc);
+    yg= -(xt)*sin(fc)*sin(lc)	+(yt)*cos(fc)*sin(lc)	+(zt)*cos(lc);
+    zg= +(xt)*cos(fc)			+(yt)*sin(fc)			+0;
+
+    if(r!=0.0)	// ???????? r==0.0 ???????????? ??? ????????? ?????????
+    {
+        xg+=r*cos(fc)*cos(lc);
+        yg+=r*cos(fc)*sin(lc);
+        zg+=r*sin(fc);
+    }
+}
+
+// ??????? ?? ???????????????? ????????????? ?? ? ????????? ???????????????? ????????????? ?? (???????????????? ??????????, ????????? ??????????, ?????? ?????????)
+// ????????? ?? ?????????? ????????? ???????????????? ?? ?? ???????? ???? ???????????? ??? OY (????, ??? ???????, ?????????? ? ???????????? ? ???????????? ?????? ??? ????)
+void conversionTopoCartesToStartCartes(double xt, double yt, double zt, double& xs, double& ys, double& zs, double a)
+{
+    a=-a;
+    xs= +(xt)*cos(a)	+0.0	-(zt)*sin(a);
+    ys= +0.0			+yt		+0.0;
+    zs= +(xt)*sin(a)	+0.0	+(zt)*cos(a);
+}
+
+// ??????? ?? ?????????? ??????????????? ????????????? ?? ? ???????????????? ????????????? ?? (?????????? ??????????, ???????????????? ??????????, ????????????? ?????????? ?????? ???)
+void conversionGeoCartesToTopoCartes(double xg, double yg, double zg, double& xt, double& yt, double& zt, double r, double fc, double lc)
+{
+    if(r!=0.0)	// ???????? r==0.0 ???????????? ??? ????????? ?????????
+    {
+        xg-=r*cos(fc)*cos(lc);
+        yg-=r*cos(fc)*sin(lc);
+        zg-=r*sin(fc);
+    }
+
+    xt= -(xg)*sin(fc)*cos(lc)	-(yg)*sin(fc)*sin(lc)	+(zg)*cos(fc);
+    //yt= +(xg)*cos(fc)*cos(lc)	-(yg)*cos(fc)*sin(lc)	+(zg)*sin(fc);
+    yt= +(xg)*cos(fc)*cos(lc)	+(yg)*cos(fc)*sin(lc)	+(zg)*sin(fc);
+    zt= -(xg)*sin(lc)			+(yg)*cos(lc)			+0			;
+}
+
+// ??????? ????????????? ?? ? ?????????? xz ? xy
+void conversionCartesTwoRotation(double xg, double yg, double zg, double& xt, double& yt, double& zt, double aq, double ae)
+{
+    xt= +(xg)*cos(ae)*cos(aq)	+(yg)*sin(ae)	+(zg)*cos(ae)*sin(aq);
+    yt= -(xg)*sin(ae)*cos(aq)	+(yg)*cos(ae)	-(zg)*sin(ae)*sin(aq);
+    zt= -(xg)*sin(aq)			+0				+(zg)*cos(aq);
+}
+
+
+static inline double sec(double x) { return 1.0 / cos(x); }
+
+void projectionGeoSphericToAzimuthalDist_Sphere(double lat, double lon, double clat, double clon, double& x, double& y) {
+    double dlon = lon - clon;
+
+    double tmp = sin(clat)*sin(lat) + cos(clat)*cos(lat)*cos(dlon);
+    double c = ((1 - tmp) > 0.00001) ? acos(tmp) : 0;
+    double k = (c != 0) ? c / sin(c) : 0.0;
+
+    x = RADIUS_EARTH_M * k * cos(lat)*sin(dlon);
+    y = RADIUS_EARTH_M * k * (cos(clat)*sin(lat) - sin(clat)*cos(lat)*cos(dlon));
+}
+
+void projectionAzimuthalDistToGeoSpheric_Sphere(double x, double y, double clat, double clon, double& lat, double& lon) {
+    double p = sqrt(x*x + y*y);
+    double c = p / RADIUS_EARTH_M;
+
+    lat = asin(cos(c)*sin(clat) + (y*sin(c)*cos(clat)) / p );
+    if(clat != 90*d2r) lon = clon + atan( (x*sin(c)) / (p*cos(clat)*cos(c) - y*sin(clat)*sin(c)) );
+    else lon = atan( (clat > 0) ? -(x/y) : (x/y) ); // 90 or -90
+}
+
+void projectionGeoSphericToAzimuthalDist_Ellips(double lat, double lon, double clat, double clon, double& x, double& y) {
+    const double a = 6378206.4;
+    const double f = 1.0 / 294.978698;
+    double e2      = f*(2.0 - f);
+    double es2	   = e2 / (1.0 - e2);
+    double e	   = sqrt(es2);
+
+    double scl	   = sin(clat);
+    double ccl	   = cos(clat);
+    double dlon	   = lon - clon;
+    double sdl	   = sin(dlon);
+    double cdl	   = cos(dlon);
+
+    double rn0	   = a / sqrt(1.0 - e2*scl*scl);
+    double g0	   = e*scl;
+    double gsq0	   = es2*scl*scl;
+    double n0	   = e*ccl;
+
+    double t	   = atan( (1.0 - e2)*tan(lat) + e2*rn0*scl / (rn0*cos(lat)) );
+    double tmp	   = (ccl*tan(t) - scl*cdl);
+    double alpha   = (tmp != 0) ? atan( sdl / tmp ) : 0;
+    double sigma;
+    if(alpha != 0 && alpha != GPI)
+        sigma      = asin( sdl*cos(t) / sin(alpha) );
+    else sigma	   = (alpha == 0) ? (t-clat) : (clat - t);
+
+    double h	   = n0*cos(alpha);
+    double h2      = h*h;
+    double s2 = pow(sigma,2), s3 = pow(sigma, 3), s4 = pow(sigma, 4), s5 = pow(sigma, 5);
+    double dist	   = rn0*sigma*(1.0 - s2*h2*(1.0 - h2) / 6.0 + (s3/8.0)*g0*h*(1.0 - 2*h2) +
+                     (s4 / 120.0) *(h2*(4.0 - 7*h2) - 3*gsq0*(1.0 - 7*h2)) - (s5 / 48.0)*g0*h);
+
+    double k0	   = 1; // scale factor
+    double xtr	   = k0*dist*sin(alpha);
+    double ytr	   = k0*dist*cos(alpha);
+
+    x			   = xtr + 0; // + false northing
+    y			   = ytr + 0; // + false easting
+}
+void projectionAzimuthalDistToGeoSpheric_Ellips(double x, double y, double clat, double clon, double& lat, double& lon) {
+    const double a = 6378206.4;
+    const double f = 1.0 / 294.978698;
+    double e2      = f*(2.0 - f);
+    double es2	   = e2 / (1.0 - e2);
+    double e	   = sqrt(es2);
+
+    double scl	   = sin(clat);
+    double ccl	   = cos(clat);
+    double dlon	   = lon - clon;
+    double sdl	   = sin(dlon);
+    double cdl	   = cos(dlon);
+
+    double rn0	   = a / sqrt(1.0 - e2*scl*scl);
+    double n02	   = es2*ccl*ccl;
+
+    double xtr	   = x - 0; // - false nothing
+    double ytr	   = y - 0; // - false easting
+    double dist	   = sqrt(xtr*xtr + ytr*ytr) / 1; // / scalse factor;
+    double al	   = atan(xtr / ytr);
+    double A	   = n02*cos(al)*cos(al);
+    double b	   = 3*es2*(1.0 + A)*scl*ccl*cos(al);
+    double d	   = dist / rn0;
+    double E	   = d + A*(1.0 - A)*pow(d, 3) / 6.0 - b*(1.0 - 3*A)*pow(d,4) / 24.0;
+    double F	   = 1.0 + A*(E*E / 2.0) - b*(E*E*E / 6.0);
+    double t	   = asin(scl*cos(E) + ccl*sin(E)*cos(al));
+
+    lat			   = atan( (tan(t) - e2*F*scl / cos(t)) / (1.0 - e2) );
+    lon			   = clon + asin(sin(al)*sin(E)/cos(t));
+    if(lon <= -GPI) lon += 2*GPI;
+    if(lon > GPI)	lon -= 2*GPI;
+}
+
+void projectionGeoSphericToAzimuthalEquiAngle_Sphere(double lat, double lon, double clat, double clon, double& x, double& y) {
+    double dlon = lon - clon;
+    double k0	= 1;			// scale factor
+
+    double k	= 2*k0 / (1.0 + sin(clat)*sin(lat) + cos(clat)*cos(lat)*cos(dlon));
+
+    x = RADIUS_EARTH_M * k * cos(lat)*sin(dlon);
+    y = RADIUS_EARTH_M * k * (cos(clat)*sin(lat) - sin(clat)*cos(lat)*cos(dlon));
+}
+
+void projectionAzimuthalEquiAngleToGeoSpheric_Sphere(double x, double y, double clat, double clon, double& lat, double& lon) {
+    double k0 = 1;									// scale factor
+    double p  = sqrt(x*x + y*y);
+    double c  = 2*atan(p / (2*RADIUS_EARTH_M*k0));
+
+    double kr = 90*d2r;
+    if(clat != kr && clat != -kr)
+        lon	  = clon + atan( (x*sin(c)) / (p*cos(clat)*cos(c) - y*sin(clat)*sin(c)) );
+    else
+        lon	  = clon + atan((clat == kr) ? -x/y : x/y);
+
+        lat   = asin( cos(c)*sin(clat) + (y*sin(c)*cos(clat) / p) );
+}
+
+
+void projectionGeoSphericToAzimuthalEquiAngle_Ellips(double lat, double lon, double clat, double clon, double& x, double& y) {
+    double k0 = 1;					// scale factor
+    const double a = 6378206.4;
+    const double f = 1.0 / 294.978698;
+    double e2 = f * (2.0 - f);
+    double es2 = e2 / (1.0 - e2);
+    double e = sqrt(es2);
+
+    double dlon = lon - clon;
+    double sl = sin(lat);
+    double scl = sin(clat);
+
+    double m = cos(lat) / sqrt(1.0 - e2 * sl * sl);
+    double m1 = cos(clat) / sqrt(1.0 - e2 * scl * scl);
+    double x0 = 2 * atan(tan(GPI / 4.0 + lat / 2.0) * pow(((1.0 - e * sl) / (1.0 + e * sl)), e / 2.0)) - GPI / 2;
+    double x1 = 2 * atan(tan(GPI / 4.0 + clat / 2.0) * pow(((1.0 - e * scl) / (1.0 + e * scl)), e / 2.0)) - GPI / 2;
+    double A = 2 * a * k0 * m1 / (cos(x1) * (1.0 + sin(x1) * sin(x0) + cos(x1) * cos(x0) * cos(dlon)));
+
+    x = A * cos(x0) * sin(dlon);
+    y = A * (cos(x1) * sin(x0) - sin(x1) * cos(x0) * cos(dlon));
+}
+
+void projectionAzimuthalEquiAngleToGeoSpheric_Ellips(double x, double y, double clat, double clon, double& lat, double& lon) {
+    double k0 = 1;					// scale factor
+    const double a = 6378206.4;
+    const double f = 1.0 / 294.978698;
+    double e2 = f * (2.0 - f);
+    double es2 = e2 / (1.0 - e2);
+    double e = sqrt(es2);
+
+    double scl = sin(clat);
+
+    double p = sqrt(x * x + y * y);
+    double m1 = cos(clat) / sqrt(1.0 - e2 * scl * scl);
+    double x1 = 2 * atan(tan(GPI / 4.0 + clat / 2.0) * pow(((1.0 - e * scl) / (1.0 + e * scl)), e / 2.0)) - GPI / 2;
+    double c = 2 * atan(p * cos(x1) / (2.0 * a * k0 * m1));
+    double x0 = (p != 0) ? asin(cos(c) * sin(x1) + (y * sin(c) * cos(x1) / p)) : x1;
+
+    double e4 = e2 * e2;
+    double e6 = e4 * e2;
+    double e8 = e6 * e2;
+    lat = x0 + (e2 / 2 + 5 * e4 / 24 + e6 / 12 + 13 * e8 / 360) * sin(2 * x0)
+        + (7 * e4 / 48 + 29 * e6 / 240 + 811 * e8 / 11520) * sin(4 * x0)
+        + (7 * e6 / 120 + 81 * e8 / 1120) * sin(6 * x0);
+    //lat = 2*atan( tan(GPI/4.0 + x0/2.0) * pow( ((1.0 + e*sin(lat)) / (1 - e*sin(lat)) ), e/2.0)) - GPI/2.0;
+    lon = clon + atan((x * sin(c)) / (p * cos(x1) * cos(c) - y * sin(x1) * sin(c)));
+}
